@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Network New Technologies Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * You may not use this file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
@@ -20,6 +20,7 @@ import com.networknt.audit.AuditHandler;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
+import com.networknt.httpstring.AttachmentConstants;
 import com.networknt.server.Server;
 import com.networknt.utility.Constants;
 import com.networknt.utility.ModuleRegistry;
@@ -118,7 +119,7 @@ public class MetricsHandler implements MiddlewareHandler {
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
         long startTime = Clock.defaultClock().getTick();
         exchange.addExchangeCompleteListener((exchange1, nextListener) -> {
-            Map<String, Object> auditInfo = exchange1.getAttachment(AuditHandler.AUDIT_INFO);
+            Map<String, Object> auditInfo = exchange1.getAttachment(AttachmentConstants.AUDIT_INFO);
             if(auditInfo != null) {
                 Map<String, String> tags = new HashMap<>();
                 tags.put("endpoint", (String)auditInfo.get(Constants.ENDPOINT_STRING));

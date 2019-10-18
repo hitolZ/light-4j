@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Network New Technologies Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * You may not use this file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
@@ -472,7 +472,7 @@ public class BodyHandlerTest {
         } finally {
             IoUtils.safeClose(connection);
         }
-        Assert.assertEquals("{key1:[value1],key2:[value2 with space],keylist[]:[1,2]}", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
+        Assert.assertEquals("{key1:value1,key2:value2 with space,keylist[]:[1, 2]}", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
     }
 
     @Test
@@ -513,6 +513,6 @@ public class BodyHandlerTest {
         } finally {
             IoUtils.safeClose(connection);
         }
-        Assert.assertEquals("{key1:[value1],key2:[value2]}", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
+        Assert.assertEquals("{key1:value1,key2:value2}", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
     }
 }

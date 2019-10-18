@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Network New Technologies Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * You may not use this file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
@@ -16,7 +16,6 @@
 
 package com.networknt.email;
 
-import com.networknt.common.DecryptUtil;
 import com.networknt.common.SecretConstants;
 import com.networknt.config.Config;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -46,7 +45,6 @@ public class EmailSender {
     public static final String CONFIG_SECRET = "secret";
 
     static final EmailConfig emailConfg = (EmailConfig)Config.getInstance().getJsonObjectConfig(CONFIG_EMAIL, EmailConfig.class);
-    static final Map<String, Object> secret = DecryptUtil.decryptMap(Config.getInstance().getJsonMapConfig(CONFIG_SECRET));
 
     public EmailSender() {
     }
@@ -69,7 +67,13 @@ public class EmailSender {
         props.put("mail.smtp.auth", emailConfg.getAuth());
         props.put("mail.smtp.ssl.trust", emailConfg.host);
 
-        SMTPAuthenticator auth = new SMTPAuthenticator(emailConfg.getUser(), (String)secret.get(SecretConstants.EMAIL_PASSWORD));
+        String pass = emailConfg.getPass();
+        if(pass == null) {
+            Map<String, Object> secret = Config.getInstance().getJsonMapConfig(CONFIG_SECRET);
+            pass = (String)secret.get(SecretConstants.EMAIL_PASSWORD);
+        }
+
+        SMTPAuthenticator auth = new SMTPAuthenticator(emailConfg.getUser(), pass);
         Session session = Session.getInstance(props, auth);
 
         MimeMessage message = new MimeMessage(session);
@@ -105,7 +109,13 @@ public class EmailSender {
         props.put("mail.smtp.auth", emailConfg.getAuth());
         props.put("mail.smtp.ssl.trust", emailConfg.host);
 
-        SMTPAuthenticator auth = new SMTPAuthenticator(emailConfg.getUser(), (String)secret.get(SecretConstants.EMAIL_PASSWORD));
+        String pass = emailConfg.getPass();
+        if(pass == null) {
+            Map<String, Object> secret = Config.getInstance().getJsonMapConfig(CONFIG_SECRET);
+            pass = (String)secret.get(SecretConstants.EMAIL_PASSWORD);
+        }
+
+        SMTPAuthenticator auth = new SMTPAuthenticator(emailConfg.getUser(), pass);
         Session session = Session.getInstance(props, auth);
 
         MimeMessage message = new MimeMessage(session);
